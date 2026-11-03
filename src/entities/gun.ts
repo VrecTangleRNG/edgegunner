@@ -4,7 +4,6 @@ import { yoyo } from './../systems/utils';
 import Matter from 'matter-js';
 
 import { ShotType, BulletContainer } from './bullet';
-import { onPointerDown } from '../systems/inputs';
 import { gunSignals, playerSignals } from '../systems/events';
 import { runningPhysicsEngine } from '../state/list/gameplay';
 
@@ -21,7 +20,10 @@ export class Gun {
 	private bulletSize: number;
 	private bulletSpeed: number;
 	private shotType: ShotType;
-	private shootingAnimation: Tween;
+
+	//	TODO: add this later
+	//	private shootingAnimation: Tween;
+
 	private recoil: number;
 	private currentRecoilTime: number = 0;
 	private isThrown: boolean;
@@ -40,12 +42,6 @@ export class Gun {
 		aimSpeed?: number,
 	) {
 		this.sprite = Sprite.from("pistol");
-		this.sprite.zIndex = 11;
-		this.sprite.angle = 0;
-
-		// TODO: Make the gun anchor itself with different sprite textures
-		this.sprite.anchor.set(0, 0.2);
-
 		app.stage.addChild(this.sprite);
 
 		this.body = Matter.Bodies.rectangle(
@@ -90,7 +86,7 @@ export class Gun {
 		}
 
 		// Events
-		onPointerDown(() => {
+		app.stage.on("pointerdown", () => {
 			this.aimingMovement.pause();
 		});
 		gunSignals.on("throwGun", (arg) => {
@@ -119,6 +115,16 @@ export class Gun {
 				this.markerPointer.alpha = 0;
 			}
 		});
+
+		// Init configurations
+		this.init();
+	}
+
+	public init() {
+		this.sprite.zIndex = 11;
+		this.sprite.angle = 0;
+		// TODO: Make the gun anchor itself with different sprite textures
+		this.sprite.anchor.set(0, 0.2);
 	}
 
 	public update(ticker: Ticker): void {

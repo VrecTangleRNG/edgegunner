@@ -10,7 +10,7 @@ import { gunSignals, playerSignals } from '../systems/events';
 export class Player {
 	public sprite: Sprite;
 	public gun: Gun;
-	public health: number = 1;
+	public health: number;
 	private app: Application;
 	private body: Matter.Body;
 	private bodyCopy: { x: number, y: number, rad: number };
@@ -24,6 +24,7 @@ export class Player {
 		this.sprite = Sprite.from("player");
 		app.stage.addChild(this.sprite);
 		this.gun = new Gun(app, true, 2);
+		this.health = 20;
 		this.app = app;
 
 		this.body = Matter.Bodies.rectangle(
@@ -90,6 +91,7 @@ export class Player {
 
 					// Check if dead
 					if (this.health <= 0) {
+						this.health = 0;
 						playerSignals.emit("dead", null);
 						gunSignals.emit("throwGun", this.gun);
 						this.jump.start();

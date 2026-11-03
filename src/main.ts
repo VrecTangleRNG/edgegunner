@@ -1,9 +1,7 @@
 import { Application } from "pixi.js";
 import { StateMachine } from './state/machine';
-import * as Input from './systems/inputs';
 import * as AssetsManager from './systems/assets';
 import { MainmenuState } from "./state/list/mainmenu";
-
 
 
 async function main(): Promise<void> {
@@ -17,12 +15,17 @@ async function main(): Promise<void> {
 	});
 	document.body.appendChild(app.canvas);
 
+	// Loads assets from file
 	app.stage.sortableChildren = true;
+	app.stage.eventMode = "static";
 	await AssetsManager.load();
 
+	// Launch the first state at game's startup
+	const stateMachine = new StateMachine(
+		new MainmenuState(app)
+	);
+
 	// Game Loop and State Machine
-	Input.initialize(app);
-	const stateMachine = new StateMachine(new MainmenuState(app));
 	app.ticker.add((ticker) => {
 		stateMachine.run(ticker);
 	});

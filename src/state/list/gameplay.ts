@@ -83,6 +83,7 @@ export class GameplayState implements State {
 		this.enemySpawner.clearEnemies();
 		this.player.clear();
 
+		// @ts-expect-error: This was meant to clear all of the events
 		Matter.Events.off(this.physicsEngine);
 		Matter.World.clear(this.physicsEngine.world, false);
 		Matter.Engine.clear(this.physicsEngine);

@@ -1,7 +1,6 @@
 import { Application, Sprite, Ticker } from 'pixi.js';
 import Matter from 'matter-js';
 
-import * as Input from './../systems/inputs';
 import { runningPhysicsEngine } from '../state/list/gameplay';
 import { enemySignals, playerSignals } from '../systems/events';
 
@@ -50,7 +49,7 @@ export class BulletContainer {
 		this.ableToShoot = true;
 
 		if (fromPlayer) {
-			Input.onPointerDown(() => {
+			app.stage.on("pointerdown", () => {
 				if (this.ableToShoot) this.fireBullet();
 			});
 

@@ -51,7 +51,7 @@ export class GameoverState implements State {
 		this.reviewButton.eventMode = "static";
 		this.reviewButton.cursor = "pointer";
 		this.reviewButton.on("pointertap", () => {
-			window.open("https://google.com", "_blank");
+			window.open("https://docs.google.com/forms/d/e/1FAIpQLScQdCMRbJAcf03rzBYEDalL0be2K-_46kyZ3c2VAA1Vp8EXVQ/viewform?usp=dialog", "_blank");
 		});
 	}
 
