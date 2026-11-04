@@ -1,8 +1,6 @@
 import { Application } from "pixi.js";
 import { StateMachine } from './state/machine';
 import * as AssetsManager from './systems/assets';
-import { MainmenuState } from "./state/list/mainmenu";
-
 
 async function main(): Promise<void> {
 
@@ -21,13 +19,11 @@ async function main(): Promise<void> {
 	await AssetsManager.load();
 
 	// Launch the first state at game's startup
-	const stateMachine = new StateMachine(
-		new MainmenuState(app)
-	);
+	const stateMachine = new StateMachine(app.stage);
 
 	// Game Loop and State Machine
 	app.ticker.add((ticker) => {
-		stateMachine.run(ticker);
+		stateMachine.update(ticker);
 	});
 }
 
