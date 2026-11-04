@@ -5,10 +5,8 @@ export interface State {
 	container: Container;
 	machine: StateMachine;
 
-	init(stateMachine: StateMachine): void;
-	update(ticker: Ticker): boolean;
-
-	onEnter(): void;
+	update(ticker: Ticker): void;
+	onEnter(stateMachine: StateMachine): void;
 	onExit(): void;
 	onPause(): void;
 	onResume(): void;
@@ -36,10 +34,9 @@ export class StateMachine {
 		const currentState = this.getTopmostState();
 		if (currentState) currentState.onPause();
 
-		newState.init(this);
+		newState.onEnter(this);
 		this.states.push(newState);
 		this.container.addChild(newState.container);
-		newState.onEnter();
 	}
 
 	public pop(): State | null {
