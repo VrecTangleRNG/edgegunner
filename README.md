@@ -1,2 +1,2 @@
-# myWebGame
-A web game about AIMING &amp; shooting enemies with your gun
+# Edgegunner
+A web game about AIMING &amp; shooting enemies with your gun.
