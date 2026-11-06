@@ -19,7 +19,7 @@ async function main(): Promise<void> {
 
 	await AssetsManager.load();
 
-	const stateMachine = new StateMachine(app.stage);
+	const stateMachine = new StateMachine(app);
 	stateMachine.push(new MainmenuState());
 
 	// Game Loop and State Machine

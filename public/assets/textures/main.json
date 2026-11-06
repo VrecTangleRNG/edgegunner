@@ -120,12 +120,12 @@
         "y": 0.5
       }
     },
-    "equipmentBtn": {
+    "rewardsBtn": {
       "frame": {
         "x": 731,
         "y": 931,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "rotated": false,
       "trimmed": false,
@@ -133,11 +133,11 @@
         "x": 0,
         "y": 0,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "sourceSize": {
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "pivot": {
         "x": 0.5,
@@ -147,9 +147,9 @@
     "playBtn": {
       "frame": {
         "x": 731,
-        "y": 981,
+        "y": 994,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "rotated": false,
       "trimmed": false,
@@ -157,59 +157,11 @@
         "x": 0,
         "y": 0,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "sourceSize": {
         "w": 240,
-        "h": 50
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "rewardsBtn": {
-      "frame": {
-        "x": 325,
-        "y": 1030,
-        "w": 240,
-        "h": 50
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 240,
-        "h": 50
-      },
-      "sourceSize": {
-        "w": 240,
-        "h": 50
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "settingsBtn": {
-      "frame": {
-        "x": 565,
-        "y": 1031,
-        "w": 240,
-        "h": 50
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 240,
-        "h": 50
-      },
-      "sourceSize": {
-        "w": 240,
-        "h": 50
+        "h": 63
       },
       "pivot": {
         "x": 0.5,
@@ -219,9 +171,9 @@
     "shopBtn": {
       "frame": {
         "x": 325,
-        "y": 1080,
+        "y": 1030,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "rotated": false,
       "trimmed": false,
@@ -229,11 +181,35 @@
         "x": 0,
         "y": 0,
         "w": 240,
-        "h": 50
+        "h": 63
       },
       "sourceSize": {
         "w": 240,
-        "h": 50
+        "h": 63
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "equipmentBtn": {
+      "frame": {
+        "x": 565,
+        "y": 1057,
+        "w": 240,
+        "h": 63
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 63
+      },
+      "sourceSize": {
+        "w": 240,
+        "h": 63
       },
       "pivot": {
         "x": 0.5,
@@ -242,8 +218,8 @@
     },
     "gunSubPanel": {
       "frame": {
-        "x": 805,
-        "y": 1031,
+        "x": 325,
+        "y": 1093,
         "w": 117,
         "h": 84
       },
@@ -266,8 +242,8 @@
     },
     "nameSubPanel": {
       "frame": {
-        "x": 565,
-        "y": 1115,
+        "x": 325,
+        "y": 1177,
         "w": 253,
         "h": 38
       },
@@ -290,12 +266,12 @@
     },
     "healthBar": {
       "frame": {
-        "x": 922,
-        "y": 1031,
+        "x": 442,
+        "y": 1120,
         "w": 174,
         "h": 54
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -314,8 +290,8 @@
     },
     "infoSubPanel": {
       "frame": {
-        "x": 325,
-        "y": 1130,
+        "x": 805,
+        "y": 1057,
         "w": 117,
         "h": 72
       },
@@ -338,8 +314,8 @@
     },
     "homeBtn": {
       "frame": {
-        "x": 818,
-        "y": 1115,
+        "x": 616,
+        "y": 1120,
         "w": 85,
         "h": 83
       },
@@ -362,8 +338,8 @@
     },
     "retryBtn": {
       "frame": {
-        "x": 442,
-        "y": 1130,
+        "x": 701,
+        "y": 1120,
         "w": 85,
         "h": 83
       },
@@ -384,10 +360,82 @@
         "y": 0.5
       }
     },
+    "torsoBtn": {
+      "frame": {
+        "x": 922,
+        "y": 1057,
+        "w": 89,
+        "h": 64
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 89,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 89,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "basicSetBtn": {
       "frame": {
-        "x": 527,
-        "y": 1153,
+        "x": 786,
+        "y": 1129,
+        "w": 64,
+        "h": 89
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 89
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 89
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "gunBtn": {
+      "frame": {
+        "x": 850,
+        "y": 1129,
+        "w": 89,
+        "h": 64
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 89,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 89,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "mafiaSetBtn": {
+      "frame": {
+        "x": 914,
+        "y": 1146,
         "w": 64,
         "h": 89
       },
@@ -408,55 +456,7 @@
         "y": 0.5
       }
     },
-    "gunBtn": {
-      "frame": {
-        "x": 616,
-        "y": 1153,
-        "w": 89,
-        "h": 64
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 89,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 89,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hatBtn": {
-      "frame": {
-        "x": 705,
-        "y": 1153,
-        "w": 89,
-        "h": 64
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 89,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 89,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "mafiaSetBtn": {
+    "militarySetBtn": {
       "frame": {
         "x": 960,
         "y": 687,
@@ -480,34 +480,10 @@
         "y": 0.5
       }
     },
-    "militarySetBtn": {
+    "hatBtn": {
       "frame": {
         "x": 960,
         "y": 776,
-        "w": 64,
-        "h": 89
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 64,
-        "h": 89
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 89
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "torsoBtn": {
-      "frame": {
-        "x": 960,
-        "y": 865,
         "w": 89,
         "h": 64
       },
@@ -530,8 +506,8 @@
     },
     "gunDashboardBtn": {
       "frame": {
-        "x": 971,
-        "y": 929,
+        "x": 960,
+        "y": 840,
         "w": 88,
         "h": 64
       },
@@ -554,8 +530,8 @@
     },
     "cancelBtn": {
       "frame": {
-        "x": 976,
-        "y": 993,
+        "x": 971,
+        "y": 904,
         "w": 117,
         "h": 41
       },
@@ -578,8 +554,8 @@
     },
     "equipBtn": {
       "frame": {
-        "x": 976,
-        "y": 1110,
+        "x": 986,
+        "y": 1021,
         "w": 117,
         "h": 41
       },
@@ -602,8 +578,8 @@
     },
     "equipedBtn": {
       "frame": {
-        "x": 1017,
-        "y": 993,
+        "x": 1012,
+        "y": 904,
         "w": 117,
         "h": 41
       },
@@ -626,12 +602,12 @@
     },
     "slider": {
       "frame": {
-        "x": 1049,
-        "y": 0,
+        "x": 325,
+        "y": 1215,
         "w": 346,
         "h": 13
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -650,8 +626,8 @@
     },
     "crossBtn": {
       "frame": {
-        "x": 1004,
-        "y": 346,
+        "x": 1003,
+        "y": 1138,
         "w": 58,
         "h": 58
       },
@@ -666,30 +642,6 @@
       "sourceSize": {
         "w": 58,
         "h": 58
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "continueBtn": {
-      "frame": {
-        "x": 1004,
-        "y": 404,
-        "w": 54,
-        "h": 54
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 54,
-        "h": 54
-      },
-      "sourceSize": {
-        "w": 54,
-        "h": 54
       },
       "pivot": {
         "x": 0.5,
@@ -699,7 +651,7 @@
     "pauseBtn": {
       "frame": {
         "x": 1004,
-        "y": 458,
+        "y": 0,
         "w": 54,
         "h": 54
       },
@@ -720,14 +672,62 @@
         "y": 0.5
       }
     },
-    "aboutBtn": {
+    "continueBtn": {
       "frame": {
-        "x": 1017,
-        "y": 1110,
+        "x": 1004,
+        "y": 54,
+        "w": 54,
+        "h": 54
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 54,
+        "h": 54
+      },
+      "sourceSize": {
+        "w": 54,
+        "h": 54
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "rerollBtn": {
+      "frame": {
+        "x": 1024,
+        "y": 108,
         "w": 45,
         "h": 44
       },
-      "rotated": false,
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 45,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 45,
+        "h": 44
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "aboutBtn": {
+      "frame": {
+        "x": 1024,
+        "y": 153,
+        "w": 45,
+        "h": 44
+      },
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -746,12 +746,12 @@
     },
     "playerBtn": {
       "frame": {
-        "x": 1017,
-        "y": 1154,
+        "x": 1024,
+        "y": 198,
         "w": 45,
         "h": 44
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -768,14 +768,14 @@
         "y": 0.5
       }
     },
-    "rerollBtn": {
+    "settingsBtn": {
       "frame": {
-        "x": 1004,
-        "y": 512,
+        "x": 1024,
+        "y": 243,
         "w": 45,
         "h": 44
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -794,8 +794,8 @@
     },
     "player": {
       "frame": {
-        "x": 794,
-        "y": 1198,
+        "x": 1003,
+        "y": 1196,
         "w": 28,
         "h": 64
       },
@@ -818,12 +818,12 @@
     },
     "glock": {
       "frame": {
-        "x": 1017,
-        "y": 1198,
+        "x": 578,
+        "y": 1174,
         "w": 41,
         "h": 25
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -842,8 +842,8 @@
     },
     "knob": {
       "frame": {
-        "x": 858,
-        "y": 1198,
+        "x": 1027,
+        "y": 1021,
         "w": 34,
         "h": 29
       },
@@ -866,8 +866,8 @@
     },
     "particle": {
       "frame": {
-        "x": 1017,
-        "y": 1223,
+        "x": 914,
+        "y": 1129,
         "w": 6,
         "h": 6
       },
@@ -890,12 +890,12 @@
     }
   },
   "meta": {
-    "app": "https://free-tex-packer.org",
+    "app": "http://free-tex-packer.com",
     "version": "0.6.7",
     "image": "main.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1062,
+      "w": 1068,
       "h": 1229
     },
     "scale": 1

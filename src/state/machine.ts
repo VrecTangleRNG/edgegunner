@@ -13,14 +13,19 @@ export interface State {
 }
 
 export class StateMachine {
+	private app: Application;
 	private states: State[];
 	private container: Container;
 
-	constructor(appContainer: Container) {
+	constructor(app: Application) {
+		this.app = app;
 		this.states = [];
-		this.container = appContainer;
+		this.container = app.stage;
 	}
 
+	public getApp(): Application {
+		return this.app;
+	}
 	public getTopmostState(): State | null {
 		const currentState = this.states[this.states.length - 1];
 		return currentState ? currentState : null;
