@@ -90,20 +90,21 @@ export class MainmenuState implements State {
 		this.aboutBtn.y = this.playerBtn.y;
 
 		// Game scene elements
-		const playerSprite = this.player.getSprite();
-		const platformSprite = this.platform.getSprite();
+		const playerSprite = this.player.sprite;
+		const platformSprite = this.platform.sprite;
+		const platformGround = this.platform.ground;
 		this.background.position.set(0);
+		this.background.zIndex = -2;
 		this.ground.y = this.background.height;
 		this.platform.setPosition(
 			-platformSprite.width * 8.5/10,
 			this.ground.y - platformSprite.height - 10
 		);
-		this.platform.setZIndex(1);
+		this.platform.sprite.zIndex = -1;
 		this.player.setPosition(
 			margin,
-			this.platform.getPlatformGround().y - playerSprite.height
+			platformGround.y - playerSprite.height
 		);
-		this.player.setZIndex(2);
 	}
 
 	onExit(): void {

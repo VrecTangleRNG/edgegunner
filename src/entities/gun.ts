@@ -1,14 +1,14 @@
 import { Container, Sprite } from "pixi.js";
 
-export class Entity {
-	protected sprite: Sprite;
+export class Gun {
+	public sprite: Sprite;
 
 	constructor(name: string) {
 		this.sprite = Sprite.from(name);
 	}
 
-	public getSprite(): Sprite {
-		return this.sprite;
+	public init(): void {
+		this.sprite.anchor.set(0.5);
 	}
 
 	public addToContainer(container: Container): void {
@@ -18,11 +18,6 @@ export class Entity {
 
 	public setPosition(x: number, y?: number): void {
 		this.sprite.position.set(x, y);
-		return;
-	}
-
-	public setZIndex(zIndex: number): void {
-		this.sprite.zIndex = zIndex;
 		return;
 	}
 }

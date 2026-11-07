@@ -5,5 +5,5 @@ export async function load() {
 	//await Assets.load([
 		//{ alias: "background", src: "assets/textures/bg.png" },
 	//]);
-	await Assets.load("assets/textures/main.json");
+	await Assets.load("textures/main.json");
 }
