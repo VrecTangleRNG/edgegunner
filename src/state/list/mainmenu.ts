@@ -2,6 +2,8 @@ import { Container, Sprite, Ticker } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
 import { Platform } from "../../entities/platform";
+import { MainmenuUI } from "../../ui/mainmenu";
+import { globalEvent } from "../../systems/utils";
 
 export class MainmenuState implements State {
 	name = "mainmenu";
@@ -13,14 +15,7 @@ export class MainmenuState implements State {
 	private ground: Sprite;
 	private player: Player;
 	private platform: Platform;
-	private title: Sprite;
-	private playBtn: Sprite;
-	private equipmentBtn: Sprite;
-	private rewardsBtn: Sprite;
-	private shopBtn: Sprite;
-	private settingsBtn: Sprite;
-	private playerBtn: Sprite;
-	private aboutBtn: Sprite;
+	private ui: MainmenuUI;
 
 	constructor() {
 
@@ -29,70 +24,32 @@ export class MainmenuState implements State {
 		this.ground = Sprite.from("ground");
 		this.player = new Player();
 		this.platform = new Platform();
-
-		// UI elements
-		this.title = Sprite.from("title");
-		this.playBtn = Sprite.from("playBtn");
-		this.equipmentBtn = Sprite.from("equipmentBtn");
-		this.rewardsBtn = Sprite.from("rewardsBtn");
-		this.shopBtn = Sprite.from("shopBtn");
-		this.settingsBtn = Sprite.from("settingsBtn");
-		this.playerBtn = Sprite.from("playerBtn");
-		this.aboutBtn = Sprite.from("aboutBtn");
+		this.ui = new MainmenuUI();
 
 		// Containers
 		this.container = new Container();
 		this.cameraContainer = new Container();
 
+		this.cameraContainer.addChild(this.background, this.ground);
 		this.player.addToContainer(this.cameraContainer);
 		this.platform.addToContainer(this.cameraContainer);
-		this.cameraContainer.addChild(this.background, this.ground);
-		this.container.addChild(
-			this.cameraContainer,
-			this.title,
-			this.playBtn,
-			this.equipmentBtn,
-			this.rewardsBtn,
-			this.shopBtn,
-			this.settingsBtn,
-			this.playerBtn,
-			this.aboutBtn,
-		);
-	}
 
-	update(ticker: Ticker) {
+		this.container.addChild(this.cameraContainer);
+		this.ui.addToContainer(this.container);
 	}
 
 	onEnter(stateMachine: StateMachine): void {
 
 		// Containers and machine
-		const screen = stateMachine.getApp().screen;
+		const screen = stateMachine.app.screen;
 		this.machine = stateMachine;
 		this.cameraContainer.y = -screen.height / 4;
-
-		// UI elements
-		const margin = (screen.height - this.title.height - this.playBtn.height * 4) / 7;
-		this.title.x = screen.width - this.title.width - margin;
-		this.title.y = margin + 10;
-		this.shopBtn.x = screen.width - this.shopBtn.width - margin;
-		this.shopBtn.y = screen.height - this.shopBtn.height - margin;
-		this.rewardsBtn.x = this.shopBtn.x;
-		this.rewardsBtn.y = this.shopBtn.y - this.rewardsBtn.height - margin;
-		this.equipmentBtn.x = this.shopBtn.x;
-		this.equipmentBtn.y = this.rewardsBtn.y - this.equipmentBtn.height - margin;
-		this.playBtn.x = this.shopBtn.x;
-		this.playBtn.y = this.equipmentBtn.y - this.playBtn.height - margin;
-		this.settingsBtn.x = margin;
-		this.settingsBtn.y = screen.height - this.settingsBtn.height - margin;
-		this.playerBtn.x = this.settingsBtn.x + this.settingsBtn.width + margin;
-		this.playerBtn.y = this.settingsBtn.y;
-		this.aboutBtn.x = this.playerBtn.x + this.aboutBtn.width + margin;
-		this.aboutBtn.y = this.playerBtn.y;
 
 		// Game scene elements
 		const playerSprite = this.player.sprite;
 		const platformSprite = this.platform.sprite;
 		const platformGround = this.platform.ground;
+		this.ui.init();
 		this.background.position.set(0);
 		this.background.zIndex = -2;
 		this.ground.y = this.background.height;
@@ -102,17 +59,16 @@ export class MainmenuState implements State {
 		);
 		this.platform.sprite.zIndex = -1;
 		this.player.setPosition(
-			margin,
+			32,
 			platformGround.y - playerSprite.height
 		);
+
+		// Signal receivers
+		globalEvent.on("pressedplay", () => {
+		});
 	}
 
-	onExit(): void {
-	}
-	
-	onPause(): void {
-	}
-
-	onResume(): void {
+	update(ticker: Ticker): void {
+		this.ui.animate();
 	}
 }

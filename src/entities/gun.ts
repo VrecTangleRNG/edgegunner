@@ -8,7 +8,7 @@ export class Gun {
 	}
 
 	public init(): void {
-		this.sprite.anchor.set(0.5);
+		this.sprite.anchor.set(0.2, 0.5);
 	}
 
 	public addToContainer(container: Container): void {

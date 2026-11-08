@@ -5,17 +5,17 @@ export interface State {
 	container: Container;
 	machine: StateMachine;
 
-	update(ticker: Ticker): void;
+	update?(ticker: Ticker): void;
 	onEnter(stateMachine: StateMachine): void;
-	onExit(): void;
-	onPause(): void;
-	onResume(): void;
+	onExit?(): void;
+	onPause?(): void;
+	onResume?(): void;
 }
 
 export class StateMachine {
-	private app: Application;
+	public app: Application;
+	public container: Container;
 	private states: State[];
-	private container: Container;
 
 	constructor(app: Application) {
 		this.app = app;
@@ -23,21 +23,14 @@ export class StateMachine {
 		this.container = app.stage;
 	}
 
-	public getApp(): Application {
-		return this.app;
-	}
 	public getTopmostState(): State | null {
 		const currentState = this.states[this.states.length - 1];
 		return currentState ? currentState : null;
 	}
 
-	public getContainer(): Container {
-		return this.container;
-	}
-
 	public push(newState: State): void {
 		const currentState = this.getTopmostState();
-		if (currentState) currentState.onPause();
+		if (currentState && currentState.onPause) currentState.onPause();
 
 		newState.onEnter(this);
 		this.states.push(newState);
@@ -47,13 +40,13 @@ export class StateMachine {
 	public pop(): State | null {
 		const currentState = this.states.pop();
 		if (currentState) {
-			currentState.onExit();
+			if (currentState.onExit) currentState.onExit();
 			this.container.removeChild(currentState.container);
 			currentState.container.destroy({ children: true });
 		}
 
 		const previousState = this.getTopmostState();
-		if (previousState) previousState.onResume();
+		if (previousState && previousState.onResume) previousState.onResume();
 
 		return currentState ? currentState : null;
 	}
@@ -67,7 +60,7 @@ export class StateMachine {
 
 	public update(ticker: Ticker): void {
 		this.states.forEach( (state) => {
-			state.update(ticker);
+			if (state.update) state.update(ticker);
 		});
 	}
 }
