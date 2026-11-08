@@ -68,7 +68,7 @@ export class MainmenuUI {
 
 		this.exitAnimations.add(
 			toRightScreen(this.title, 0),
-			toRightScreen(this.playBtn, 0),
+			toRightScreen(this.playBtn, 0, this.exitAnimations).chain(blink(this.playBtn, 0, this.exitAnimations)),
 			toRightScreen(this.equipmentBtn, 1),
 			toRightScreen(this.rewardsBtn, 2),
 			toRightScreen(this.shopBtn, 3),
@@ -81,7 +81,7 @@ export class MainmenuUI {
 		this.playBtn.on("pointertap", () => {
 			globalEvent.emit("pressedplay");
 			this.exitAnimations.getAll().forEach( (tween) => {
-				tween.start();
+				if (!tween.isPlaying()) tween.start();
 			});
 		});
 		return;
@@ -103,24 +103,36 @@ export class MainmenuUI {
 	}
 }
 
-function toRightScreen(sprite: Sprite, order: number): Tween {
+function toRightScreen(sprite: Sprite, delayRate: number, group?: Group): Tween {
 	const object = { x: sprite.x };
-	return new Tween(object)
+	return new Tween(object, group)
 		.to({ x: 965 }, 600)
 		.easing(Easing.Quadratic.In)
-		.delay(75 * order)
+		.delay(75 * delayRate)
 		.onUpdate( () => {
 			sprite.x = object.x;
 		})
 }
 
-function toBottomScreen(sprite: Sprite, order: number): Tween {
+function toBottomScreen(sprite: Sprite, delayRate: number, group?: Group): Tween {
 	const object = { y: sprite.y };
-	return new Tween(object)
+	return new Tween(object, group)
 		.to({ y: 545 }, 600)
 		.easing(Easing.Quadratic.In)
-		.delay(75 * order)
+		.delay(75 * delayRate)
 		.onUpdate( () => {
 			sprite.y = object.y;
 		})
+}
+
+function blink(sprite: Sprite, delayRate: number, group?: Group): Tween {
+	const object = { x: sprite.x };
+	return new Tween(object, group)
+		.to({ x: sprite.x - 100 }, 200)
+		.easing(Easing.Quadratic.Out)
+		.delay(75 * delayRate)
+		.onUpdate( () => {
+			sprite.x = object.x;
+		})
+		.repeat(2)
 }
