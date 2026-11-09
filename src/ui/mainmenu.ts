@@ -1,10 +1,11 @@
 import { Container, Sprite } from "pixi.js";
 import { globalEvent, setBtn } from "../systems/utils";
-import { Easing, Group, Tween } from "@tweenjs/tween.js";
+import { Tween } from "@tweenjs/tween.js";
+import { blink, startTweens, toBottom, toRight, updateTweens } from "../systems/tweens";
 
 export class MainmenuUI {
 	private uiContainer: Container;
-	private exitAnimations: Group;
+	private exitAnimations: Tween[];
 	private title: Sprite;
 	private playBtn: Sprite;
 	private equipmentBtn: Sprite;
@@ -16,7 +17,7 @@ export class MainmenuUI {
 
 	constructor() {
 		this.uiContainer = new Container();
-		this.exitAnimations = new Group();
+		this.exitAnimations = [];
 		this.title = Sprite.from("title");
 		this.playBtn = Sprite.from("playBtn");
 		this.equipmentBtn = Sprite.from("equipmentBtn");
@@ -66,29 +67,32 @@ export class MainmenuUI {
 		this.aboutBtn.x = this.playerBtn.x + this.aboutBtn.width + margin;
 		this.aboutBtn.y = this.playerBtn.y;
 
-		this.exitAnimations.add(
-			toRightScreen(this.title, 0),
-			toRightScreen(this.playBtn, 0, this.exitAnimations).chain(blink(this.playBtn, 0, this.exitAnimations)),
-			toRightScreen(this.equipmentBtn, 1),
-			toRightScreen(this.rewardsBtn, 2),
-			toRightScreen(this.shopBtn, 3),
-			toBottomScreen(this.settingsBtn, 0),
-			toBottomScreen(this.playerBtn, 0),
-			toBottomScreen(this.aboutBtn, 0),
-		);
+		this.exitAnimations = [
+			toRight(this.title, 500, 0),
+			toRight(this.playBtn, 500, 0),
+			toRight(this.equipmentBtn, 500, 50),
+			toRight(this.rewardsBtn, 500, 100),
+			toRight(this.shopBtn, 500, 150),
+			toBottom(this.settingsBtn, 500, 0),
+			toBottom(this.playerBtn, 500, 0),
+			toBottom(this.aboutBtn, 500, 0),
+		];
 
 		setBtn(this.playBtn);
 		this.playBtn.on("pointertap", () => {
-			globalEvent.emit("pressedplay");
-			this.exitAnimations.getAll().forEach( (tween) => {
-				if (!tween.isPlaying()) tween.start();
-			});
+			for (let i = 0; i < this.exitAnimations.length; i++) {
+				if (i == 1) {
+					this.exitAnimations[i] = blink(this.playBtn, 200, 0);
+					this.exitAnimations.push(toRight(this.playBtn, 500, 600));
+				}
+				this.exitAnimations[i].start();
+			}
 		});
 		return;
 	}
 
 	public animate(): void {
-		this.exitAnimations.update();
+		updateTweens(this.exitAnimations);
 	}
 
 	public erase(): void {
@@ -101,38 +105,4 @@ export class MainmenuUI {
 		this.playerBtn.destroy();
 		this.aboutBtn.destroy();
 	}
-}
-
-function toRightScreen(sprite: Sprite, delayRate: number, group?: Group): Tween {
-	const object = { x: sprite.x };
-	return new Tween(object, group)
-		.to({ x: 965 }, 600)
-		.easing(Easing.Quadratic.In)
-		.delay(75 * delayRate)
-		.onUpdate( () => {
-			sprite.x = object.x;
-		})
-}
-
-function toBottomScreen(sprite: Sprite, delayRate: number, group?: Group): Tween {
-	const object = { y: sprite.y };
-	return new Tween(object, group)
-		.to({ y: 545 }, 600)
-		.easing(Easing.Quadratic.In)
-		.delay(75 * delayRate)
-		.onUpdate( () => {
-			sprite.y = object.y;
-		})
-}
-
-function blink(sprite: Sprite, delayRate: number, group?: Group): Tween {
-	const object = { x: sprite.x };
-	return new Tween(object, group)
-		.to({ x: sprite.x - 100 }, 200)
-		.easing(Easing.Quadratic.Out)
-		.delay(75 * delayRate)
-		.onUpdate( () => {
-			sprite.x = object.x;
-		})
-		.repeat(2)
 }
