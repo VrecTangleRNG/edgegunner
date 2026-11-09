@@ -68,6 +68,10 @@ export class MainmenuState implements State {
 		});
 	}
 
+	onExit(): void {
+		globalEvent.off("pressedplay");
+	}
+
 	update(ticker: Ticker): void {
 		this.ui.animate();
 	}

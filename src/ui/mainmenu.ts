@@ -87,6 +87,8 @@ export class MainmenuUI {
 				}
 				this.exitAnimations[i].start();
 			}
+			this.playBtn.eventMode = "none";
+			globalEvent.emit("pressedplay");
 		});
 		return;
 	}

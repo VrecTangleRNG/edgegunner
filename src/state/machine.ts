@@ -14,18 +14,43 @@ export interface State {
 
 export class StateMachine {
 	public app: Application;
+	private buffer: any[];
 	public container: Container;
 	private states: State[];
 
 	constructor(app: Application) {
 		this.app = app;
-		this.states = [];
+		this.buffer = [];
 		this.container = app.stage;
+		this.states = [];
+	}
+
+	public getBuffer(index?: number): any[] | any {
+		if (index && index >= 0) return this.buffer[index];
+		return this.buffer;
 	}
 
 	public getTopmostState(): State | null {
 		const currentState = this.states[this.states.length - 1];
 		return currentState ? currentState : null;
+	}
+
+	public addBuffer(buffer: any | any[]): void {
+		if (typeof buffer === "object") {
+			buffer.forEach((value: any) => {
+				this.buffer.push(value);
+			});
+		}
+		this.buffer.push(buffer);
+		return;
+	}
+
+	public cleanBuffer(index?: number): void {
+		if (index && index >= 0) {
+			this.buffer.splice(index, 1);
+			return;
+		}
+		else if (!index) this.buffer = [];
 	}
 
 	public push(newState: State): void {
