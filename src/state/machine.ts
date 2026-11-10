@@ -6,7 +6,7 @@ export interface State {
 	machine: StateMachine;
 
 	update?(ticker: Ticker): void;
-	onEnter(stateMachine: StateMachine): void;
+	onEnter?(stateMachine: StateMachine): void;
 	onExit?(): void;
 	onPause?(): void;
 	onResume?(): void;
@@ -57,7 +57,7 @@ export class StateMachine {
 		const currentState = this.getTopmostState();
 		if (currentState && currentState.onPause) currentState.onPause();
 
-		newState.onEnter(this);
+		if (newState.onEnter) newState.onEnter(this);
 		this.states.push(newState);
 		this.container.addChild(newState.container);
 	}
@@ -67,7 +67,7 @@ export class StateMachine {
 		if (currentState) {
 			if (currentState.onExit) currentState.onExit();
 			this.container.removeChild(currentState.container);
-			currentState.container.destroy({ children: true });
+			currentState.container.destroy();
 		}
 
 		const previousState = this.getTopmostState();
@@ -81,6 +81,12 @@ export class StateMachine {
 			const poppedState = this.pop();
 			if (poppedState && poppedState.name === name) break;
 		}
+	}
+
+	public replace(newState: State): void {
+		this.pop();
+		this.push(newState);
+		return;
 	}
 
 	public update(ticker: Ticker): void {

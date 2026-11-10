@@ -4,6 +4,8 @@ import { Player } from "../../entities/player";
 import { Platform } from "../../entities/platform";
 import { MainmenuUI } from "../../ui/mainmenu";
 import { globalEvent } from "../../systems/utils";
+import { TransitionState } from "./transition";
+import { GameplayState } from "./gameplay";
 
 export class MainmenuState implements State {
 	name = "mainmenu";
@@ -65,14 +67,16 @@ export class MainmenuState implements State {
 
 		// Signal receivers
 		globalEvent.on("pressedplay", () => {
+			this.machine.addBuffer([
+				this.cameraContainer,
+				this.ui,
+			]);
+			this.machine.pop();
 		});
 	}
 
 	onExit(): void {
 		globalEvent.off("pressedplay");
-	}
-
-	update(ticker: Ticker): void {
-		this.ui.animate();
+		this.machine.push(new TransitionState(new GameplayState(), this.name));
 	}
 }
