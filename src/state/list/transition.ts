@@ -1,21 +1,22 @@
 import { Container } from "pixi.js";
 import { State, StateMachine } from "../machine";
-import * as Transitions from "../../systems/transitions";
+import * as T from "../../transitions/linker";
+import * as TTypes from "../../transitions/types";
 
 export class TransitionState implements State {
 	name = "transition";
 	container: Container;
 	machine!: StateMachine;
 
-	private runner: () => void;
+	private linker: TTypes.Transition;
 	private spawner: string;
 	private toState: State;
 
 	constructor(toState: State, spawner: string) {
 		this.container = new Container();
-		this.runner = this.checkLink();
 		this.spawner = spawner;
 		this.toState = toState;
+		this.linker = this.checkLink();
 	}
 
 	onEnter(stateMachine: StateMachine): void {
@@ -26,13 +27,13 @@ export class TransitionState implements State {
 	}
 
 	update(): void {
-		this.runner();
+		this.linker.update();
 	}
 
-	private checkLink(): () => void {
+	private checkLink(): TTypes.Transition {
 		if (this.spawner === "mainmenu" && this.toState.name === "gameplay") {
-			return Transitions.mainmenuLinkGameplay;
+			return new T.MainmenuGameplay(this.machine);
 		}
-		return Transitions.nullLink;
+		return new T.NullLink();
 	}
 }

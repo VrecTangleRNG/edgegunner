@@ -1,4 +1,4 @@
-import { Container, Sprite, Ticker } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
 import { Platform } from "../../entities/platform";
@@ -69,6 +69,10 @@ export class MainmenuState implements State {
 		globalEvent.on("pressedplay", () => {
 			this.machine.addBuffer([
 				this.cameraContainer,
+				this.platform,
+				this.player,
+				this.background,
+				this.ground,
 				this.ui,
 			]);
 			this.machine.pop();

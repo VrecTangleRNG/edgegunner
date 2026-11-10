@@ -3,7 +3,6 @@ import { globalEvent, setBtn } from "../systems/utils";
 import { Tween } from "@tweenjs/tween.js";
 import { blink, toBottom, toRight, updateTweens } from "../systems/tweens";
 
-// TODO
 export class MainmenuUI {
 	private uiContainer: Container;
 	private exitAnimations: Tween[];
