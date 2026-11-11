@@ -1,7 +1,6 @@
 import { Container, Sprite } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
-import { Platform } from "../../entities/platform";
 import { MainmenuUI } from "../../ui/mainmenu";
 import { globalEvent } from "../../systems/utils";
 import { TransitionState } from "./transition";
@@ -17,7 +16,7 @@ export class MainmenuState implements State {
 	private background: Sprite;
 	private ground: Sprite;
 	private player: Player;
-	private platform: Platform;
+	private platform: Sprite;
 	private ui: MainmenuUI;
 
 	constructor() {
@@ -26,16 +25,15 @@ export class MainmenuState implements State {
 		this.background = Sprite.from("background");
 		this.ground = Sprite.from("ground");
 		this.player = new Player();
-		this.platform = new Platform();
+		this.platform = Sprite.from("platform");
 		this.ui = new MainmenuUI();
 
 		// Containers
 		this.container = new Container();
 		this.cameraContainer = new Container();
 
-		this.cameraContainer.addChild(this.background, this.ground);
+		this.cameraContainer.addChild(this.background, this.ground, this.platform);
 		this.player.addToContainer(this.cameraContainer);
-		this.platform.addToContainer(this.cameraContainer);
 
 		this.container.addChild(this.cameraContainer);
 		this.ui.addToContainer(this.container);
@@ -50,20 +48,18 @@ export class MainmenuState implements State {
 
 		// Game scene elements
 		const playerSprite = this.player.sprite;
-		const platformSprite = this.platform.sprite;
-		const platformGround = this.platform.ground;
 		this.ui.init();
 		this.background.position.set(0);
 		this.background.zIndex = -2;
 		this.ground.y = this.background.height;
-		this.platform.setPosition(
-			-platformSprite.width * 8.5/10,
-			this.ground.y - platformSprite.height - 10
+		this.platform.position.set(
+			-this.platform.width * 8.5/10,
+			this.ground.y - this.platform.height - 10
 		);
-		this.platform.sprite.zIndex = -1;
-		this.player.setPosition(
+		this.platform.zIndex = -1;
+		this.player.container.position.set(
 			32,
-			platformGround.y - playerSprite.height
+			this.platform.y - playerSprite.height + this.platform.height - 11
 		);
 
 		// Signal receivers

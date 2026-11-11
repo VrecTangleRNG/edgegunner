@@ -1,5 +1,4 @@
 import { Container, Sprite } from "pixi.js"
-import { Platform } from "../entities/platform";
 import { Player } from "../entities/player";
 import { MainmenuUI } from "../ui/mainmenu";
 
@@ -10,7 +9,7 @@ export interface Transition {
 
 export type MainmenuBuffer = {
 	cameraContainer: Container,
-	platform: Platform,
+	platform: Sprite,
 	player: Player,
 	background: Sprite,
 	ground: Sprite,

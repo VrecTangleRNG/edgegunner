@@ -1,7 +1,6 @@
 import { Container, Sprite } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
-import { Platform } from "../../entities/platform";
 
 export class GameplayState implements State {
 	name = "gameplay";
@@ -12,8 +11,8 @@ export class GameplayState implements State {
 	private background: Sprite | null;
 	private ground: Sprite | null;
 	private player: Player | null;
-	private playerPlatform: Platform | null;
-	private enemuPlatforms: Platform[];
+	private playerPlatform: Sprite | null;
+	private enemuPlatforms: Sprite[];
 
 	constructor() {
 		this.container = new Container();
@@ -25,7 +24,7 @@ export class GameplayState implements State {
 		this.player = null;
 		this.playerPlatform = null;
 		this.enemuPlatforms = [];
-		for (let i = 0; i < 3; i++) this.enemuPlatforms[i] = new Platform();
+		for (let i = 0; i < 3; i++) this.enemuPlatforms[i] = Sprite.from("platform");
 	}
 
 	onEnter(stateMachine: StateMachine): void {
