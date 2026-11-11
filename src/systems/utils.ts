@@ -1,5 +1,7 @@
 import { EventEmitter, Sprite } from "pixi.js";
 
+export type Coordinate = { x: number, y: number };
+
 export function yoyo(f: any) {
 	return (t : any) => {
 		if (t < 0.5) {

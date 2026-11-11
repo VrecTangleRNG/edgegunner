@@ -1,6 +1,6 @@
-import { Sprite, ColorMatrixFilter } from "pixi.js";
+import { Sprite, ColorMatrixFilter, Container } from "pixi.js";
 import { Easing, Tween } from "@tweenjs/tween.js";
-import { yoyo } from "./utils";
+import { Coordinate, yoyo } from "./utils";
 
 export function startTweens(tweens: Tween[]): void {
 	tweens.forEach((tween) => tween.start());
@@ -31,6 +31,23 @@ export function toBottom(sprite: Sprite, duration: number, delay: number): Tween
 		.onUpdate( () => {
 			sprite.y = object.y;
 		})
+}
+
+export function toPoint(
+	object: Sprite | Container,
+	to: Coordinate,
+	duration: number,
+	delay?: number
+): Tween {
+	const from: Coordinate = {x: object.x, y: object.y };
+	return new Tween(from)
+		.to(to, duration)
+		.delay(delay)
+		.easing(Easing.Quadratic.InOut)
+		.onUpdate( () => {
+			object.x = from.x;
+			object.y = from.y;
+		});
 }
 
 export function blink(sprite: Sprite, duration: number, delay: number): Tween {

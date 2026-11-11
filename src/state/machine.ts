@@ -35,12 +35,7 @@ export class StateMachine {
 		return currentState ? currentState : null;
 	}
 
-	public addBuffer(buffer: any | any[]): void {
-		if (typeof buffer === "object") {
-			buffer.forEach((value: any) => {
-				this.buffer.push(value);
-			});
-		}
+	public addBuffer(buffer: any): void {
 		this.buffer.push(buffer);
 		return;
 	}

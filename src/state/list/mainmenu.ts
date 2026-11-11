@@ -6,6 +6,7 @@ import { MainmenuUI } from "../../ui/mainmenu";
 import { globalEvent } from "../../systems/utils";
 import { TransitionState } from "./transition";
 import { GameplayState } from "./gameplay";
+import { MainmenuBuffer } from "../../transitions/types";
 
 export class MainmenuState implements State {
 	name = "mainmenu";
@@ -67,14 +68,15 @@ export class MainmenuState implements State {
 
 		// Signal receivers
 		globalEvent.on("pressedplay", () => {
-			this.machine.addBuffer([
-				this.cameraContainer,
-				this.platform,
-				this.player,
-				this.background,
-				this.ground,
-				this.ui,
-			]);
+			const buffer: MainmenuBuffer = {
+				cameraContainer: this.cameraContainer,
+				platform: this.platform,
+				player: this.player,
+				background: this.background,
+				ground: this.ground,
+				ui: this.ui,
+			};
+			this.machine.addBuffer(buffer);
 			this.machine.pop();
 		});
 	}
