@@ -24,8 +24,13 @@ export class TransitionState implements State {
 		if (this.linker.init) this.linker.init(this.container);
 	}
 
+	onExit(): void {
+		this.machine.push(this.toState);
+	}
+
 	update(ticker: Ticker): void {
 		if (this.linker.update(ticker)) return;
+		this.machine.pop();
 	}
 
 	private checkLink(): TTypes.Transition {

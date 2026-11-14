@@ -4,6 +4,7 @@ import { Tween } from "@tweenjs/tween.js";
 import { blink, startTweens, toBottom, toPoint, toRight, updateTweens } from "../systems/tweens";
 
 export class GameplayUi {
+	isAnimationFinished: boolean;
 	private uiContainer: Container;
 	private enterAnimations: Tween[];
 	private healthBar: Sprite;
@@ -11,10 +12,12 @@ export class GameplayUi {
 	private continueBtn: Sprite;
 	private crossBtn: Sprite;
 	private progressBar: Graphics;
+	private progressFill: Graphics;
 	// private bossIcon: Sprite;	// TODO: Include bossIco into the spritesheet
 	// private coinIco: Sprite;		// TODO: Include coinIco into the spritesheet
 
 	constructor() {
+		this.isAnimationFinished = false;
 		this.uiContainer = new Container();
 		this.enterAnimations = [];
 		this.healthBar = Sprite.from("healthBar");
@@ -22,6 +25,7 @@ export class GameplayUi {
 		this.continueBtn = Sprite.from("continueBtn");
 		this.crossBtn = Sprite.from("crossBtn");
 		this.progressBar = new Graphics();
+		this.progressFill = new Graphics();
 	}
 
 	public addToContainer(container: Container): void {
@@ -31,14 +35,13 @@ export class GameplayUi {
 			this.crossBtn,
 			this.pauseBtn,
 			this.progressBar,
+			this.progressFill,
 		);
 		container.addChild(this.uiContainer);
 		return;
 	}
 
 	public init(): void {
-
-		// Constants
 		const margin = 8;
 		const screen = {
 			width: 960,
@@ -58,6 +61,7 @@ export class GameplayUi {
 		this.progressBar.x = this.healthBar.x + this.healthBar.width +
 			(xDiff - this.progressBar.width) / 2;
 		this.progressBar.y = -4 * margin;
+		this.progressFill.position = this.progressBar.position;
 
 		// Animations
 		this.enterAnimations.push(
@@ -74,6 +78,7 @@ export class GameplayUi {
 				y: margin,
 			}, 250, 2450),
 		);
+		this.enterAnimations[2].onComplete(() => this.isAnimationFinished = true);
 		startTweens(this.enterAnimations);
 		return;
 	}
@@ -83,5 +88,11 @@ export class GameplayUi {
 	}
 
 	public erase(): void {
+		this.healthBar.destroy();
+		this.pauseBtn.destroy();
+		this.continueBtn.destroy();
+		this.crossBtn.destroy();
+		this.progressBar.destroy();
+		this.progressFill.destroy();
 	}
 }

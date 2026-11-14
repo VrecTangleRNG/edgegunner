@@ -6,16 +6,20 @@ import { Container, Sprite } from "pixi.js";
 import { GameplayUi } from "../ui/gameplay";
 
 export class MainmenuGameplay implements Types.Transition {
+	private machine: StateMachine;
 	private buffer: any | any[];
 	private mainmenuBuffer: Types.MainmenuBuffer;
 	private gameplayUi: GameplayUi;
+	private enemyPlatforms: Sprite[];
 	private animations: Tween[];
 	private isRunning: boolean;
 
 	constructor(machine: StateMachine) {
+		this.machine = machine;
 		this.buffer = machine.getBuffer();
 		this.mainmenuBuffer = this.buffer[0];
 		this.gameplayUi = new GameplayUi();
+		this.enemyPlatforms = [];
 		this.animations = [];
 		this.isRunning = true;
 	}
@@ -27,7 +31,6 @@ export class MainmenuGameplay implements Types.Transition {
 		const cameraContainer = this.mainmenuBuffer.cameraContainer;
 		const player = this.mainmenuBuffer.player;
 		const platform = this.mainmenuBuffer.platform;
-		const enemyPlatforms = [];
 		const targetPlayerY = background.height / 2 - player.container.height / 2;
 
 		// Container additions
@@ -38,14 +41,15 @@ export class MainmenuGameplay implements Types.Transition {
 
 		// Enemy platforms creation and initializations
 		for (let i = 0; i < 3; i++) {
-			enemyPlatforms.push(Sprite.from("platform"));
-			container.addChild(enemyPlatforms[i]);
-			enemyPlatforms[i].x = background.width - enemyPlatforms[i].width;
-			enemyPlatforms[i].y = -enemyPlatforms[i].height - 8;
+			this.enemyPlatforms.push(Sprite.from("platform"));
+			container.addChild(this.enemyPlatforms[i]);
+			this.enemyPlatforms[i].x = background.width - this.enemyPlatforms[i].width;
+			this.enemyPlatforms[i].y = -this.enemyPlatforms[i].height - 8;
 			this.animations.push(
-				toPoint(enemyPlatforms[i], {
-					x: enemyPlatforms[i].x,
-					y: (background.height - enemyPlatforms[0].height * 3) / 3 * (i + 1),
+				toPoint(this.enemyPlatforms[i], {
+					x: this.enemyPlatforms[i].x,
+					y: (background.height - this.enemyPlatforms[0].height * 3) / 3 *
+						(i + 1),
 				}, 1000, 1500 - 250 * i),
 			);
 		}
@@ -62,15 +66,22 @@ export class MainmenuGameplay implements Types.Transition {
 				y: targetPlayerY + player.sprite.height - platform.height + 11
 			}, 1500, 500),
 		);
-		this.animations[2].onComplete(() => { this.isRunning = false });
 		startTweens(this.animations);
 	}
-	
+
 	update(): boolean {
 		this.mainmenuBuffer.ui.animate();
 		this.gameplayUi.animate();
 		updateTweens(this.animations);
-		return this.isRunning;
+		if (!this.gameplayUi.isAnimationFinished) return true;
+		else {
+			const gameplayBuffer: Types.GameplayBuffer = {
+				platforms: this.enemyPlatforms,
+				ui: this.gameplayUi,
+			}
+			this.machine.addBuffer(gameplayBuffer);
+			return false;
+		}
 	}
 }
 
