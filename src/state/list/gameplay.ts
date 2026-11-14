@@ -1,91 +1,48 @@
-import { Application, Sprite, Ticker, Text, TextStyle, Container } from "pixi.js";
-import { State } from './../machine';
-import Matter from "matter-js";
-
-import { EnemySpawner, SpawnMode } from "../../systems/enemySpawner";
-import { enemySignals } from "../../systems/events";
-
-import { GameoverState } from "./gameover";
+import { Container, Sprite } from "pixi.js";
+import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
-
-
-export let runningPhysicsEngine: Matter.Engine;
-export let runningPlayer: Player;
+import { GameplayBuffer, MainmenuBuffer } from "../../transitions/types";
+import { GameplayUi } from "../../ui/gameplay";
 
 export class GameplayState implements State {
 	name = "gameplay";
-	app: Application;
-	container: Container = new Container;
+	container: Container;
+	machine!: StateMachine;
+	private ui: GameplayUi | null;
+	private cameraContainer: Container | null;
+	private background: Sprite | null;
+	private ground: Sprite | null;
+	private player: Player | null;
+	private playerPlatform: Sprite | null;
+	private enemyPlatforms: Sprite[];
 
-	private player: Player;
-	private enemySpawner: EnemySpawner;
-	private physicsEngine: Matter.Engine;
+	constructor() {
+		this.container = new Container();
+		this.cameraContainer = null;
 
-	private textStyle: TextStyle;
-	private scoreText: Text;			// TODO: Substitute with BitmapText later
-	private hpText: Text;				// TODO: Substitute with BitmapText later
-	private score: number = 0;
-	private waitTIme: number = 2500;
-
-	constructor(app: Application) {
-		this.app = app;
-
-		// Physics engine
-		this.physicsEngine = Matter.Engine.create({
-			gravity: {
-				x: 0, y: 2
-			}
-		});
-		runningPhysicsEngine = this.physicsEngine;
-
-		// Player
-		this.player = new Player(app);
-		runningPlayer = this.player;
-
-		// Enemy spawning
-		this.enemySpawner = new EnemySpawner(app, SpawnMode.Normal);
-
-		// Text rendering
-		this.textStyle = new TextStyle({
-			fontSize: 36,
-			fill: 0x111111
-		});
-		this.scoreText = new Text({ text: "score: 0", style: this.textStyle});
-		this.hpText = new Text({ text: "HP: 20", style: this.textStyle, y: 44});
-		this.app.stage.addChild(this.scoreText);
-		this.app.stage.addChild(this.hpText);
-
-		// Events
-		enemySignals.on("enemyKilled", () => {
-			this.score += 10;
-			this.scoreText.text = `score: ${this.score}`;
-		});
+		// Game scene elements
+		this.ui = null;
+		this.background = null;
+		this.ground = null;
+		this.player = null;
+		this.playerPlatform = null;
+		this.enemyPlatforms = [];
 	}
 
-	enter(): void {
-		this.player.init();
-	}
+	onEnter(stateMachine: StateMachine): void {
+		const buffer = stateMachine.getBuffer();
+		const mainmenuBuffer: MainmenuBuffer = buffer[0];
+		const gameplayBuffer: GameplayBuffer = buffer[1];
+		this.machine = stateMachine;
+		this.cameraContainer = mainmenuBuffer.cameraContainer;
+		this.playerPlatform = mainmenuBuffer.platform;
+		this.player = mainmenuBuffer.player;
+		this.background = mainmenuBuffer.background;
+		this.ground = mainmenuBuffer.ground;
+		this.ui = gameplayBuffer.ui;
+		this.enemyPlatforms = gameplayBuffer.platforms;
 
-	update(ticker: Ticker): boolean {
-		Matter.Engine.update(this.physicsEngine, ticker.deltaMS);
-		this.enemySpawner.update(ticker);
-		this.player.update(ticker);
-		this.hpText.text = `HP: ${this.player.health}`;
-
-		if (this.player.health <= 0) {
-			this.waitTIme -= ticker.deltaMS;
-			if (this.waitTIme <= 0) return false;
-		}
-		return true;
-	}
-
-	exit(): State {
-		this.enemySpawner.clearEnemies();
-		this.player.clear();
-
-		Matter.Events.off(this.physicsEngine);
-		Matter.World.clear(this.physicsEngine.world, false);
-		Matter.Engine.clear(this.physicsEngine);
-		return new GameoverState(this.app);
+		// TODO: Continue adding children to this.container
+		this.container.addChild(this.cameraContainer);
 	}
 }

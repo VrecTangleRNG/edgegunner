@@ -1,60 +1,84 @@
-import { Application, Container, Ticker, Sprite, Text, TextStyle } from "pixi.js";
-
-import { State } from './../machine';
+import { Container, Sprite } from "pixi.js";
+import { State, StateMachine } from "../machine";
+import { Player } from "../../entities/player";
+import { MainmenuUI } from "../../ui/mainmenu";
+import { globalEvent } from "../../systems/utils";
+import { TransitionState } from "./transition";
 import { GameplayState } from "./gameplay";
+import { MainmenuBuffer } from "../../transitions/types";
 
 export class MainmenuState implements State {
 	name = "mainmenu";
-	app: Application;
 	container: Container;
+	machine!: StateMachine;
 
+	private cameraContainer: Container;
 	private background: Sprite;
-	private textStyle: TextStyle;
-	private text: Text;
-	private isClicked: boolean;
+	private ground: Sprite;
+	private player: Player;
+	private platform: Sprite;
+	private ui: MainmenuUI;
 
-	constructor(app: Application) {
-		this.app = app;
-		this.container = new Container();
-		app.stage.addChild(this.container);
+	constructor() {
 
+		// Game scene elements
 		this.background = Sprite.from("background");
-		this.textStyle = new TextStyle();
-		this.text = new Text();
-		this.isClicked = false;
+		this.ground = Sprite.from("ground");
+		this.player = new Player();
+		this.platform = Sprite.from("platform");
+		this.ui = new MainmenuUI();
 
-		this.container.addChild(this.background, this.text);
+		// Containers
+		this.container = new Container();
+		this.cameraContainer = new Container();
 
-		app.stage.on("pointertap", () => {
-			this.isClicked = true;
+		this.cameraContainer.addChild(this.background, this.ground, this.platform);
+		this.player.addToContainer(this.cameraContainer);
+
+		this.container.addChild(this.cameraContainer);
+		this.ui.addToContainer(this.container);
+	}
+
+	onEnter(stateMachine: StateMachine): void {
+
+		// Containers and machine
+		const screen = stateMachine.app.screen;
+		this.machine = stateMachine;
+		this.cameraContainer.y = -screen.height / 4;
+
+		// Game scene elements
+		const playerSprite = this.player.sprite;
+		this.ui.init();
+		this.background.position.set(0);
+		this.background.zIndex = -2;
+		this.ground.y = this.background.height;
+		this.platform.position.set(
+			-this.platform.width * 8.5/10,
+			this.ground.y - this.platform.height - 10
+		);
+		this.platform.zIndex = -1;
+		this.player.container.position.set(
+			32,
+			this.platform.y - playerSprite.height + this.platform.height - 11
+		);
+
+		// Signal receivers
+		globalEvent.on("pressedplay", () => {
+			const buffer: MainmenuBuffer = {
+				cameraContainer: this.cameraContainer,
+				platform: this.platform,
+				player: this.player,
+				background: this.background,
+				ground: this.ground,
+				ui: this.ui,
+			};
+			this.machine.addBuffer(buffer);
+			this.machine.pop();
 		});
 	}
 
-	enter(): void {
-		this.background.zIndex = 0;
-
-		this.textStyle.fontSize = 36;
-		this.textStyle.fill = 0x000000;
-
-		this.text.style = this.textStyle;
-		this.text.text = "Hello playtester, welcome to the prototype!\n\
-		The enemies are chasing you from right!\n\
-		Survive with your gun at the bottom left of screen\n\
-		Click the screen with your mouse/finger to shoot while\n\
-		swinging the gun aiming up and down.\n\
-		don't aim too long or the enemies will shoot you back!\n\n\Submit\
-		any bugs and glitches to the provided forms\n\
-		from \"GIVE INPUTS\" button at the game over screen\n\n\
-		And lastly, tap the screen to HAVE FUN!";
-	}
-
-	update(ticker: Ticker): boolean {
-		if (this.isClicked) return false;
-		return true;
-	}
-
-	exit(): State {
-		this.container.removeChild(this.text);
-		return new GameplayState(this.app);
+	onExit(): void {
+		globalEvent.off("pressedplay");
+		this.machine.push(new TransitionState(new GameplayState(), this.name));
 	}
 }
