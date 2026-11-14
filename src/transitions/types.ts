@@ -1,10 +1,10 @@
-import { Container, Sprite } from "pixi.js"
+import { Container, Sprite, Ticker } from "pixi.js"
 import { Player } from "../entities/player";
 import { MainmenuUI } from "../ui/mainmenu";
 
 export interface Transition {
-	init?(): void;
-	update(): void;
+	init?(container: Container): void;
+	update(ticker: Ticker): boolean;
 }
 
 export type MainmenuBuffer = {

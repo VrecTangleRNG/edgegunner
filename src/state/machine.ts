@@ -55,6 +55,7 @@ export class StateMachine {
 		if (newState.onEnter) newState.onEnter(this);
 		this.states.push(newState);
 		this.container.addChild(newState.container);
+		console.log(this.states);
 	}
 
 	public pop(): State | null {
@@ -76,12 +77,6 @@ export class StateMachine {
 			const poppedState = this.pop();
 			if (poppedState && poppedState.name === name) break;
 		}
-	}
-
-	public replace(newState: State): void {
-		this.pop();
-		this.push(newState);
-		return;
 	}
 
 	public update(ticker: Ticker): void {

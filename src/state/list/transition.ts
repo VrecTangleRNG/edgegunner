@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import * as T from "../../transitions/updater";
 import * as TTypes from "../../transitions/types";
@@ -19,15 +19,13 @@ export class TransitionState implements State {
 	}
 
 	onEnter(stateMachine: StateMachine): void {
-
-		// Container and machine
 		this.machine = stateMachine;
 		this.linker = this.checkLink();
-		if (this.linker.init) this.linker.init();
+		if (this.linker.init) this.linker.init(this.container);
 	}
 
-	update(): void {
-		this.linker.update();
+	update(ticker: Ticker): void {
+		if (this.linker.update(ticker)) return;
 	}
 
 	private checkLink(): TTypes.Transition {

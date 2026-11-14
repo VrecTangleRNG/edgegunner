@@ -12,7 +12,7 @@ export class GameplayState implements State {
 	private ground: Sprite | null;
 	private player: Player | null;
 	private playerPlatform: Sprite | null;
-	private enemuPlatforms: Sprite[];
+	private enemyPlatforms: Sprite[];
 
 	constructor() {
 		this.container = new Container();
@@ -23,20 +23,11 @@ export class GameplayState implements State {
 		this.ground = null;
 		this.player = null;
 		this.playerPlatform = null;
-		this.enemuPlatforms = [];
-		for (let i = 0; i < 3; i++) this.enemuPlatforms[i] = Sprite.from("platform");
+		this.enemyPlatforms = [];
+		for (let i = 0; i < 3; i++) this.enemyPlatforms[i] = Sprite.from("platform");
 	}
 
 	onEnter(stateMachine: StateMachine): void {
 		this.machine = stateMachine;
-		stateMachine.addBuffer([
-			this.container,
-			this.cameraContainer,
-			this.enemuPlatforms,
-			this.background,
-			this.ground,
-			this.player,
-			this.playerPlatform,
-		]);
 	}
 }
