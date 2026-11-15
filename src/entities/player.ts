@@ -1,6 +1,6 @@
 import { Sprite, Container, Ticker } from "pixi.js";
 import { Gun } from "./gun";
-import { startTweens, updateTweens } from "../systems/tweens";
+import { readyPlayer, startTweens, updateTweens } from "../systems/tweens";
 
 export class Player {
 	container: Container;

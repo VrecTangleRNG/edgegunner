@@ -1,6 +1,7 @@
 import { Sprite, ColorMatrixFilter, Container } from "pixi.js";
 import { Easing, Tween } from "@tweenjs/tween.js";
 import { Coordinate, yoyo } from "./utils";
+import { Player } from "../entities/player";
 
 export function startTweens(tweens: Tween[]): void {
 	tweens.forEach((tween) => tween.start());
@@ -64,23 +65,29 @@ export function blink(sprite: Sprite, duration: number, delay: number): Tween {
 		.repeat(4);
 }
 
-export function initAim(sprite: Sprite): Tween {
-	const angle = { deg: sprite.angle };
-	return new Tween(angle)
-			.to({ deg: 45}, 500)
-			.easing(Easing.Linear.InOut)
-			.onUpdate( () => {
-				sprite.angle = angle.deg;
-			})
-}
-
 export function aim(sprite: Sprite, aimSpeed: number = 2000): Tween {
 	const angle = { deg: sprite.angle };
 	return new Tween(angle)
-			.to({ deg: -45}, aimSpeed)
+			.to({ deg: -60}, aimSpeed)
 			.easing(yoyo(Easing.Linear.InOut))
 			.onUpdate( () => {
 				sprite.angle = angle.deg;
 			})
 			.repeat(Infinity);
+}
+
+export function readyPlayer(player: Player, duration: number): Tween {
+	const position = { x: player.container.x };
+	return new Tween(position)
+			.to({ x: 32}, duration)
+			.easing(Easing.Linear.InOut)
+			.onUpdate( () => {
+				player.container.x = position.x;
+			})
+			.onStart(() => {
+				player.container.scale.x = -1;
+			})
+			.onComplete(() => {
+				player.container.scale.x = 1;
+			});
 }

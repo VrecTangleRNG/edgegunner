@@ -1,6 +1,6 @@
 import { Tween } from "@tweenjs/tween.js";
 import { Container, Graphics, GraphicsContext, Sprite, Ticker } from "pixi.js";
-import { initAim, aim } from "../systems/tweens";
+import { aim } from "../systems/tweens";
 
 export class Gun {
 	sprite: Sprite;
@@ -12,7 +12,7 @@ export class Gun {
 
 	constructor(name: string) {
 		this.sprite = Sprite.from(name);
-		this.aiming = initAim(this.sprite);
+		this.aiming = aim(this.sprite);
 		this.pointerContext = new GraphicsContext();
 		this.pointer = new Graphics();
 		this.markerContext = new GraphicsContext();
@@ -20,10 +20,6 @@ export class Gun {
 	}
 
 	public init(): void {
-		this.aiming.onComplete(() => {
-			this.aiming = aim(this.sprite);
-			this.aiming.start();
-		});
 		this.sprite.anchor.set(0.2);
 		this.sprite.x = 28;
 		this.sprite.y = 32;
@@ -46,9 +42,9 @@ export class Gun {
 			.arc(
 				this.sprite.x, this.sprite.y,
 				lineLength, 0,
-				radians
+				radians, true
 			)
-			.fill({ color: 0xFFFFFF, alpha: 0.3});
+			.fill({ color: 0xFFFFFF, alpha: 0.2});
 		this.pointerContext.clear()
 			.moveTo(this.sprite.x, this.sprite.y)
 			.lineTo(

@@ -1,7 +1,7 @@
 import { Tween } from "@tweenjs/tween.js";
 import { StateMachine } from "../state/machine";
 import * as Types from "./types";
-import { startTweens, toPoint, updateTweens } from "../systems/tweens";
+import { readyPlayer, startTweens, toPoint, updateTweens } from "../systems/tweens";
 import { Container, Sprite } from "pixi.js";
 import { GameplayUi } from "../ui/gameplay";
 
@@ -12,7 +12,6 @@ export class MainmenuGameplay implements Types.Transition {
 	private gameplayUi: GameplayUi;
 	private enemyPlatforms: Sprite[];
 	private animations: Tween[];
-	private isRunning: boolean;
 
 	constructor(machine: StateMachine) {
 		this.machine = machine;
@@ -21,7 +20,6 @@ export class MainmenuGameplay implements Types.Transition {
 		this.gameplayUi = new GameplayUi();
 		this.enemyPlatforms = [];
 		this.animations = [];
-		this.isRunning = true;
 	}
 
 	init(container: Container): void {
@@ -30,8 +28,6 @@ export class MainmenuGameplay implements Types.Transition {
 		const background = this.mainmenuBuffer.background;
 		const cameraContainer = this.mainmenuBuffer.cameraContainer;
 		const player = this.mainmenuBuffer.player;
-		const platform = this.mainmenuBuffer.platform;
-		const targetPlayerY = background.height / 2 - player.container.height / 2;
 
 		// Container additions
 		container.addChild(cameraContainer);
@@ -57,14 +53,7 @@ export class MainmenuGameplay implements Types.Transition {
 		// Animations
 		this.animations.push(
 			toPoint(cameraContainer, { x: 0, y: 0 }, 1000),
-			toPoint(player.container, {
-				x: player.container.x,
-				y: targetPlayerY
-			}, 1500, 500),
-			toPoint(platform, {
-				x: platform.x,
-				y: targetPlayerY + player.sprite.height - platform.height + 11
-			}, 1500, 500),
+			readyPlayer(player, 1000)
 		);
 		startTweens(this.animations);
 	}

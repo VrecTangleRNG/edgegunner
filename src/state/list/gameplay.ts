@@ -35,7 +35,6 @@ export class GameplayState implements State {
 		const gameplayBuffer: GameplayBuffer = buffer[1];
 		this.machine = stateMachine;
 		this.cameraContainer = mainmenuBuffer.cameraContainer;
-		this.playerPlatform = mainmenuBuffer.platform;
 		this.player = mainmenuBuffer.player;
 		this.background = mainmenuBuffer.background;
 		this.ground = mainmenuBuffer.ground;

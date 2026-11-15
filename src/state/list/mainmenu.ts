@@ -16,7 +16,6 @@ export class MainmenuState implements State {
 	private background: Sprite;
 	private ground: Sprite;
 	private player: Player;
-	private platform: Sprite;
 	private ui: MainmenuUI;
 
 	constructor() {
@@ -25,14 +24,13 @@ export class MainmenuState implements State {
 		this.background = Sprite.from("background");
 		this.ground = Sprite.from("ground");
 		this.player = new Player();
-		this.platform = Sprite.from("platform");
 		this.ui = new MainmenuUI();
 
 		// Containers
 		this.container = new Container();
 		this.cameraContainer = new Container();
 
-		this.cameraContainer.addChild(this.background, this.ground, this.platform);
+		this.cameraContainer.addChild(this.background, this.ground);
 		this.player.addToContainer(this.cameraContainer);
 
 		this.container.addChild(this.cameraContainer);
@@ -47,26 +45,19 @@ export class MainmenuState implements State {
 		this.cameraContainer.y = -screen.height / 4;
 
 		// Game scene elements
-		const playerSprite = this.player.sprite;
 		this.ui.init();
 		this.background.position.set(0);
 		this.background.zIndex = -2;
 		this.ground.y = this.background.height;
-		this.platform.position.set(
-			-this.platform.width * 8.5/10,
-			this.ground.y - this.platform.height - 10
-		);
-		this.platform.zIndex = -1;
 		this.player.container.position.set(
-			32,
-			this.platform.y - playerSprite.height + this.platform.height - 11
+			screen.width / 3 - this.player.sprite.width / 2,
+			this.ground.y - this.player.container.height
 		);
 
 		// Signal receivers
 		globalEvent.on("pressedplay", () => {
 			const buffer: MainmenuBuffer = {
 				cameraContainer: this.cameraContainer,
-				platform: this.platform,
 				player: this.player,
 				background: this.background,
 				ground: this.ground,

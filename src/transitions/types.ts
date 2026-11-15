@@ -10,7 +10,6 @@ export interface Transition {
 
 export type MainmenuBuffer = {
 	cameraContainer: Container,
-	platform: Sprite,
 	player: Player,
 	background: Sprite,
 	ground: Sprite,
