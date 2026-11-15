@@ -1,7 +1,6 @@
 import { Container, Graphics, Sprite } from "pixi.js";
-import { globalEvent, setBtn } from "../systems/utils";
 import { Tween } from "@tweenjs/tween.js";
-import { blink, startTweens, toBottom, toPoint, toRight, updateTweens } from "../systems/tweens";
+import { startTweens, toPoint, updateTweens } from "../systems/tweens";
 
 export class GameplayUi {
 	isAnimationFinished: boolean;
@@ -51,15 +50,14 @@ export class GameplayUi {
 		// Initializations
 		this.healthBar.x = margin;
 		this.healthBar.y = -this.healthBar.height - margin;
-		this.pauseBtn.x = screen.width - this.pauseBtn.width - margin;
+		this.pauseBtn.x = this.healthBar.x;
 		this.pauseBtn.y = -this.pauseBtn.height - margin;
 		this.crossBtn.position = this.pauseBtn.position;
 		this.continueBtn.position = this.pauseBtn.position;
-		const xDiff = this.pauseBtn.x - this.healthBar.x - this.healthBar.width;
 		this.progressBar.rect(0, 0, 456, 8);
 		this.progressBar.fill(0xFFFFFF);
-		this.progressBar.x = this.healthBar.x + this.healthBar.width +
-			(xDiff - this.progressBar.width) / 2;
+		this.progressBar.x = (screen.width - margin - this.healthBar.width) / 2 +
+			margin + this.healthBar.width - this.progressBar.width / 2;
 		this.progressBar.y = -4 * margin;
 		this.progressFill.position = this.progressBar.position;
 

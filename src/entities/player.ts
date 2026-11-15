@@ -1,6 +1,6 @@
 import { Sprite, Container, Ticker } from "pixi.js";
 import { Gun } from "./gun";
-import { readyPlayer, startTweens, updateTweens } from "../systems/tweens";
+import { StateMachine } from "../state/machine";
 
 export class Player {
 	container: Container;
@@ -16,13 +16,14 @@ export class Player {
 		this.gun.addToContainer(this.container);
 	}
 
-	public addToContainer(container: Container): void {
+	addToContainer(container: Container): void {
 		container.addChild(this.container);
 		return;
 	}
-	
-	public start(): void {
+
+	start(machine: StateMachine): void {
 		this.gun.aiming.start();
+		machine.app.stage.on("pointerdown", () => this.gun.shoot());
 	}
 
 	update(ticker: Ticker): void {

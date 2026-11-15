@@ -13,7 +13,6 @@ export class GameplayState implements State {
 	private background: Sprite | null;
 	private ground: Sprite | null;
 	private player: Player | null;
-	private playerPlatform: Sprite | null;
 	private enemyPlatforms: Sprite[];
 
 	constructor() {
@@ -25,7 +24,6 @@ export class GameplayState implements State {
 		this.background = null;
 		this.ground = null;
 		this.player = null;
-		this.playerPlatform = null;
 		this.enemyPlatforms = [];
 	}
 
@@ -45,7 +43,9 @@ export class GameplayState implements State {
 		this.container.addChild(this.cameraContainer);
 		this.ui.addToContainer(this.container);
 
-		this.player.start();
+		this.player.start(stateMachine);
+		this.player.container.zIndex = 1;
+		console.log(this.player.container.zIndex);
 	}
 
 	update(ticker: Ticker): void {

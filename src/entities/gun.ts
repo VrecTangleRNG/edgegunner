@@ -9,6 +9,8 @@ export class Gun {
 	private pointer: Graphics;
 	private markerContext: GraphicsContext;
 	private marker: Graphics;
+	private recoilTime: number;
+	private timeRemaining: number;
 
 	constructor(name: string) {
 		this.sprite = Sprite.from(name);
@@ -17,9 +19,11 @@ export class Gun {
 		this.pointer = new Graphics();
 		this.markerContext = new GraphicsContext();
 		this.marker = new Graphics();
+		this.recoilTime = 400;
+		this.timeRemaining = 0;
 	}
 
-	public init(): void {
+	init(): void {
 		this.sprite.anchor.set(0.2);
 		this.sprite.x = 28;
 		this.sprite.y = 32;
@@ -27,15 +31,35 @@ export class Gun {
 		this.marker.context = this.markerContext;
 	}
 
-	public addToContainer(container: Container): void {
+	addToContainer(container: Container): void {
 		container.addChild(this.marker, this.pointer, this.sprite);
 		return;
 	}
 
-	public update(ticker: Ticker): void {
-		this.aiming.update();
+	shoot(): void {
+		this.aiming.pause();
+		this.timeRemaining = 0;
+		this.pointer.alpha = 0;
+		this.marker.alpha = 0;
+	}
 
-		const lineLength = 200;
+	update(ticker: Ticker): void {
+		if (this.aiming.isPaused()) {
+			this.timeRemaining += ticker.deltaMS;
+			this.marker.alpha = this.timeRemaining / this.recoilTime;
+			if (this.timeRemaining >= this.recoilTime) {
+				this.aiming.resume();
+				this.pointer.alpha = 1;
+				this.marker.alpha = 1;
+			}
+			return;
+		}
+		this.aiming.update();
+		this.drawMarkers();
+	}
+
+	private drawMarkers(): void {
+		const lineLength = 300;
 		const radians = this.sprite.angle * Math.PI/180;
 		this.markerContext.clear()
 			.moveTo(this.sprite.x, this.sprite.y)
@@ -51,6 +75,6 @@ export class Gun {
 				this.sprite.x + lineLength * Math.cos(radians),
 				this.sprite.y + lineLength * Math.sin(radians)
 			)
-			.stroke({ width: 1, color: 0xFFFFFF });
+			.stroke({ width: 2, color: 0xFFFFFF });
 	}
 }
