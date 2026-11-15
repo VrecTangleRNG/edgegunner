@@ -63,3 +63,24 @@ export function blink(sprite: Sprite, duration: number, delay: number): Tween {
 		})
 		.repeat(4);
 }
+
+export function initAim(sprite: Sprite): Tween {
+	const angle = { deg: sprite.angle };
+	return new Tween(angle)
+			.to({ deg: 45}, 500)
+			.easing(Easing.Linear.InOut)
+			.onUpdate( () => {
+				sprite.angle = angle.deg;
+			})
+}
+
+export function aim(sprite: Sprite, aimSpeed: number = 2000): Tween {
+	const angle = { deg: sprite.angle };
+	return new Tween(angle)
+			.to({ deg: -45}, aimSpeed)
+			.easing(yoyo(Easing.Linear.InOut))
+			.onUpdate( () => {
+				sprite.angle = angle.deg;
+			})
+			.repeat(Infinity);
+}

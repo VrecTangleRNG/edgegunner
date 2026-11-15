@@ -1,4 +1,4 @@
-import { Container, Sprite } from "pixi.js";
+import { Container, Sprite, Ticker } from "pixi.js";
 import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
 import { GameplayBuffer, MainmenuBuffer } from "../../transitions/types";
@@ -42,7 +42,14 @@ export class GameplayState implements State {
 		this.ui = gameplayBuffer.ui;
 		this.enemyPlatforms = gameplayBuffer.platforms;
 
-		// TODO: Continue adding children to this.container
+		this.enemyPlatforms.forEach((p) => this.cameraContainer?.addChild(p));
 		this.container.addChild(this.cameraContainer);
+		this.ui.addToContainer(this.container);
+
+		this.player.start();
+	}
+
+	update(ticker: Ticker): void {
+		this.player?.update(ticker);
 	}
 }

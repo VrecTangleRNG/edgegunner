@@ -1,5 +1,6 @@
-import { Sprite, Container } from "pixi.js";
+import { Sprite, Container, Ticker } from "pixi.js";
 import { Gun } from "./gun";
+import { startTweens, updateTweens } from "../systems/tweens";
 
 export class Player {
 	container: Container;
@@ -13,12 +14,18 @@ export class Player {
 		this.gun.init();
 		this.container.addChild(this.sprite);
 		this.gun.addToContainer(this.container);
-		console.log(this.container.height);
-		console.log(this.container.y);
 	}
 
 	public addToContainer(container: Container): void {
 		container.addChild(this.container);
 		return;
+	}
+	
+	public start(): void {
+		this.gun.aiming.start();
+	}
+
+	update(ticker: Ticker): void {
+		this.gun.update(ticker);
 	}
 }
