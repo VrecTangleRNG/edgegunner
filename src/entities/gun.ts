@@ -1,6 +1,8 @@
 import { Tween } from "@tweenjs/tween.js";
 import { Container, Graphics, GraphicsContext, Sprite, Ticker } from "pixi.js";
 import { aim } from "../systems/tweens";
+import { Bullet } from "./bullet";
+import { BulletContainer } from "./bulletContainer";
 
 export class Gun {
 	sprite: Sprite;
@@ -36,7 +38,10 @@ export class Gun {
 		return;
 	}
 
-	shoot(): void {
+	shoot(bc: BulletContainer): void {
+		const pos = { x: this.sprite.x, y: this.sprite.y };
+		const speed = 100;
+		new Bullet(bc, pos, this.sprite.angle, speed);
 		this.aiming.pause();
 		this.timeRemaining = 0;
 		this.pointer.alpha = 0;

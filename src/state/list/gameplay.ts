@@ -3,6 +3,7 @@ import { State, StateMachine } from "../machine";
 import { Player } from "../../entities/player";
 import { GameplayBuffer, MainmenuBuffer } from "../../transitions/types";
 import { GameplayUi } from "../../ui/gameplay";
+import { BulletContainer } from "../../entities/bulletContainer";
 
 export class GameplayState implements State {
 	name = "gameplay";
@@ -10,21 +11,19 @@ export class GameplayState implements State {
 	machine!: StateMachine;
 	private ui: GameplayUi | null;
 	private cameraContainer: Container | null;
-	private background: Sprite | null;
-	private ground: Sprite | null;
 	private player: Player | null;
 	private enemyPlatforms: Sprite[];
+	private bulletContainer: BulletContainer;
 
 	constructor() {
 		this.container = new Container();
 		this.cameraContainer = null;
 
 		// Game scene elements
-		this.ui = null;
-		this.background = null;
-		this.ground = null;
-		this.player = null;
+		this.bulletContainer = new BulletContainer(this.container);
 		this.enemyPlatforms = [];
+		this.player = null;
+		this.ui = null;
 	}
 
 	onEnter(stateMachine: StateMachine): void {
@@ -34,8 +33,6 @@ export class GameplayState implements State {
 		this.machine = stateMachine;
 		this.cameraContainer = mainmenuBuffer.cameraContainer;
 		this.player = mainmenuBuffer.player;
-		this.background = mainmenuBuffer.background;
-		this.ground = mainmenuBuffer.ground;
 		this.ui = gameplayBuffer.ui;
 		this.enemyPlatforms = gameplayBuffer.platforms;
 
@@ -43,12 +40,12 @@ export class GameplayState implements State {
 		this.container.addChild(this.cameraContainer);
 		this.ui.addToContainer(this.container);
 
-		this.player.start(stateMachine);
+		this.player.start(stateMachine, this.bulletContainer);
 		this.player.container.zIndex = 1;
-		console.log(this.player.container.zIndex);
 	}
 
 	update(ticker: Ticker): void {
 		this.player?.update(ticker);
+		this.bulletContainer.update(ticker);
 	}
 }

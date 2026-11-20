@@ -1,6 +1,7 @@
 import { Sprite, Container, Ticker } from "pixi.js";
 import { Gun } from "./gun";
 import { StateMachine } from "../state/machine";
+import { BulletContainer } from "./bulletContainer";
 
 export class Player {
 	container: Container;
@@ -21,9 +22,9 @@ export class Player {
 		return;
 	}
 
-	start(machine: StateMachine): void {
+	start(machine: StateMachine, bulletContainer: BulletContainer): void {
 		this.gun.aiming.start();
-		machine.app.stage.on("pointerdown", () => this.gun.shoot());
+		machine.app.stage.on("pointerdown", () => this.gun.shoot(bulletContainer));
 	}
 
 	update(ticker: Ticker): void {
