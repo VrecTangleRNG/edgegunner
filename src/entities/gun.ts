@@ -7,6 +7,7 @@ import { BulletContainer } from "./bulletContainer";
 export class Gun {
 	sprite: Sprite;
 	aiming: Tween;
+	private parentContainer: Container;
 	private pointerContext: GraphicsContext;
 	private pointer: Graphics;
 	private markerContext: GraphicsContext;
@@ -17,6 +18,7 @@ export class Gun {
 	constructor(name: string) {
 		this.sprite = Sprite.from(name);
 		this.aiming = aim(this.sprite);
+		this.parentContainer = new Container();
 		this.pointerContext = new GraphicsContext();
 		this.pointer = new Graphics();
 		this.markerContext = new GraphicsContext();
@@ -35,12 +37,16 @@ export class Gun {
 
 	addToContainer(container: Container): void {
 		container.addChild(this.marker, this.pointer, this.sprite);
+		this.parentContainer = container;
 		return;
 	}
 
 	shoot(bc: BulletContainer): void {
-		const pos = { x: this.sprite.x, y: this.sprite.y };
-		const speed = 100;
+		const pos = {
+			x: this.parentContainer.x + this.sprite.x,
+			y: this.parentContainer.y + this.sprite.y,
+		};
+		const speed = 1000;
 		new Bullet(bc, pos, this.sprite.angle, speed);
 		this.aiming.pause();
 		this.timeRemaining = 0;

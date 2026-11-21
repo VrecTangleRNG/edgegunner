@@ -20,7 +20,7 @@ export class GameplayState implements State {
 		this.cameraContainer = null;
 
 		// Game scene elements
-		this.bulletContainer = new BulletContainer(this.container);
+		this.bulletContainer = new BulletContainer();
 		this.enemyPlatforms = [];
 		this.player = null;
 		this.ui = null;
@@ -38,6 +38,7 @@ export class GameplayState implements State {
 
 		this.enemyPlatforms.forEach((p) => this.cameraContainer?.addChild(p));
 		this.container.addChild(this.cameraContainer);
+		this.bulletContainer.addToContainer(this.cameraContainer);
 		this.ui.addToContainer(this.container);
 
 		this.player.start(stateMachine, this.bulletContainer);

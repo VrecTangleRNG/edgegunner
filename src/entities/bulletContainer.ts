@@ -5,10 +5,15 @@ export class BulletContainer {
 	bulletContainer: Bullet[];
 	spriteContainer: Container;
 
-	constructor(parent: Container) {
+	constructor() {
 		this.bulletContainer = [];
 		this.spriteContainer = new Container();
-		parent.addChild(this.spriteContainer);
+		this.spriteContainer.zIndex = 0;
+	}
+
+	addToContainer(container: Container): void {
+		container.addChild(this.spriteContainer);
+		return;
 	}
 
 	addToList(bullet: Bullet): void {
