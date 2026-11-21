@@ -77,17 +77,17 @@ export function aim(sprite: Sprite, aimSpeed: number = 2000): Tween {
 }
 
 export function readyPlayer(player: Player, duration: number): Tween {
-	const position = { x: player.container.x };
+	const position = { x: player.binder.x };
 	return new Tween(position)
 			.to({ x: 32}, duration)
 			.easing(Easing.Linear.InOut)
 			.onUpdate( () => {
-				player.container.x = position.x;
+				player.binder.x = position.x;
 			})
 			.onStart(() => {
-				player.container.scale.x = -1;
+				player.binder.scale.x = -1;
 			})
 			.onComplete(() => {
-				player.container.scale.x = 1;
+				player.binder.scale.x = 1;
 			});
 }

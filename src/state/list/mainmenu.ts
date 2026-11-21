@@ -1,6 +1,6 @@
 import { Container, Sprite } from "pixi.js";
 import { State, StateMachine } from "../machine";
-import { Player } from "../../entities/player";
+import { Player } from "../../entities/character";
 import { MainmenuUI } from "../../ui/mainmenu";
 import { globalEvent } from "../../systems/utils";
 import { TransitionState } from "./transition";
@@ -49,9 +49,9 @@ export class MainmenuState implements State {
 		this.background.position.set(0);
 		this.background.zIndex = -2;
 		this.ground.y = this.background.height;
-		this.player.container.position.set(
+		this.player.binder.position.set(
 			screen.width / 3 - this.player.sprite.width / 2,
-			this.ground.y - this.player.container.height
+			this.ground.y - this.player.binder.height
 		);
 
 		// Signal receivers

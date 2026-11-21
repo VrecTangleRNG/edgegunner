@@ -35,7 +35,7 @@ export class GameplayState implements State {
 		this.ui.addToContainer(this.container);
 
 		this.player.start(stateMachine, this.bulletContainer);
-		this.player.container.zIndex = 1;
+		this.player.binder.zIndex = 1;
 	}
 
 	update(ticker: Ticker): void {

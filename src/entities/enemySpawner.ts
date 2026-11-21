@@ -1,6 +1,6 @@
 import { Container, Ticker } from "pixi.js";
 import { Coordinate } from "./../systems/utils";
-import { Enemy } from "./enemy";
+import { Enemy } from "./character";
 
 export class EnemySpawner {
 	container: Container = new Container;
@@ -33,8 +33,9 @@ export class EnemySpawner {
 	private spawn(): void {
 		const enemy = new Enemy();
 		const randomPicker = Math.floor(Math.random() * 4);
-		enemy.container.x = this.spawnPoints[randomPicker].x;
-		enemy.container.y = this.spawnPoints[randomPicker].y - enemy.container.height;
+		enemy.binder.x = this.spawnPoints[randomPicker].x;
+		enemy.binder.y = this.spawnPoints[randomPicker].y - enemy.binder.height;
+		enemy.reverseX();
 		enemy.addToContainer(this.container);
 		this.enemies.push(enemy);
 	}
