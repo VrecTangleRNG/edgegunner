@@ -2,6 +2,7 @@ import { Container, Sprite, Ticker } from "pixi.js"
 import { Player } from "../entities/player";
 import { MainmenuUI } from "../ui/mainmenu";
 import { GameplayUi } from "../ui/gameplay";
+import { EnemySpawner } from "../entities/enemySpawner";
 
 export interface Transition {
 	init?(container: Container): void;
@@ -19,4 +20,5 @@ export type MainmenuBuffer = {
 export type GameplayBuffer = {
 	ui: GameplayUi,
 	platforms: Sprite[],
+	enemySpawner: EnemySpawner,
 }

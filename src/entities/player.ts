@@ -6,7 +6,7 @@ import { BulletContainer } from "./bulletContainer";
 export class Player {
 	container: Container;
 	sprite: Sprite;
-	private gun: Gun;
+	protected gun: Gun;
 
 	constructor() {
 		this.container = new Container();

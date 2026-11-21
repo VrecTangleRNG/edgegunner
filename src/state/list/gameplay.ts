@@ -4,39 +4,32 @@ import { Player } from "../../entities/player";
 import { GameplayBuffer, MainmenuBuffer } from "../../transitions/types";
 import { GameplayUi } from "../../ui/gameplay";
 import { BulletContainer } from "../../entities/bulletContainer";
+import { EnemySpawner } from "../../entities/enemySpawner";
 
 export class GameplayState implements State {
-	name = "gameplay";
-	container: Container;
+	container: Container = new Container();
 	machine!: StateMachine;
-	private ui: GameplayUi | null;
-	private cameraContainer: Container | null;
-	private player: Player | null;
-	private enemyPlatforms: Sprite[];
-	private bulletContainer: BulletContainer;
-
-	constructor() {
-		this.container = new Container();
-		this.cameraContainer = null;
-
-		// Game scene elements
-		this.bulletContainer = new BulletContainer();
-		this.enemyPlatforms = [];
-		this.player = null;
-		this.ui = null;
-	}
+	name = "gameplay";
+	private bulletContainer: BulletContainer = new BulletContainer();
+	private cameraContainer: Container | null = null;
+	private enemyPlatforms: Sprite[] = [];
+	private player: Player | null = null;
+	private spawner: EnemySpawner | null = null;
+	private ui: GameplayUi | null = null;
 
 	onEnter(stateMachine: StateMachine): void {
 		const buffer = stateMachine.getBuffer();
 		const mainmenuBuffer: MainmenuBuffer = buffer[0];
 		const gameplayBuffer: GameplayBuffer = buffer[1];
-		this.machine = stateMachine;
 		this.cameraContainer = mainmenuBuffer.cameraContainer;
-		this.player = mainmenuBuffer.player;
-		this.ui = gameplayBuffer.ui;
 		this.enemyPlatforms = gameplayBuffer.platforms;
+		this.machine = stateMachine;
+		this.player = mainmenuBuffer.player;
+		this.spawner = gameplayBuffer.enemySpawner;
+		this.ui = gameplayBuffer.ui;
 
 		this.enemyPlatforms.forEach((p) => this.cameraContainer?.addChild(p));
+		this.spawner.addToContainer(this.cameraContainer);
 		this.container.addChild(this.cameraContainer);
 		this.bulletContainer.addToContainer(this.cameraContainer);
 		this.ui.addToContainer(this.container);
@@ -46,7 +39,8 @@ export class GameplayState implements State {
 	}
 
 	update(ticker: Ticker): void {
-		this.player?.update(ticker);
 		this.bulletContainer.update(ticker);
+		this.player?.update(ticker);
+		this.spawner?.update(ticker);
 	}
 }

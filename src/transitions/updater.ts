@@ -4,14 +4,16 @@ import * as Types from "./types";
 import { readyPlayer, startTweens, toPoint, updateTweens } from "../systems/tweens";
 import { Container, Sprite } from "pixi.js";
 import { GameplayUi } from "../ui/gameplay";
+import { EnemySpawner } from "../entities/enemySpawner";
 
 export class MainmenuGameplay implements Types.Transition {
-	private machine: StateMachine;
-	private buffer: any | any[];
-	private mainmenuBuffer: Types.MainmenuBuffer;
-	private gameplayUi: GameplayUi;
-	private enemyPlatforms: Sprite[];
 	private animations: Tween[];
+	private buffer: any | any[];
+	private enemyPlatforms: Sprite[];
+	private gameplayUi: GameplayUi;
+	private machine: StateMachine;
+	private mainmenuBuffer: Types.MainmenuBuffer;
+	private spawner: EnemySpawner = new EnemySpawner();
 
 	constructor(machine: StateMachine) {
 		this.machine = machine;
@@ -44,8 +46,7 @@ export class MainmenuGameplay implements Types.Transition {
 			this.animations.push(
 				toPoint(this.enemyPlatforms[i], {
 					x: this.enemyPlatforms[i].x,
-					y: (background.height - this.enemyPlatforms[0].height * 3) / 3 *
-						(i + 1),
+					y: this.spawner.spawnPoints[i].y - this.enemyPlatforms[0].height + 11,
 				}, 1000, 1500 - 250 * i),
 			);
 		}
@@ -67,6 +68,7 @@ export class MainmenuGameplay implements Types.Transition {
 			const gameplayBuffer: Types.GameplayBuffer = {
 				platforms: this.enemyPlatforms,
 				ui: this.gameplayUi,
+				enemySpawner: this.spawner,
 			}
 			this.machine.addBuffer(gameplayBuffer);
 			return false;
