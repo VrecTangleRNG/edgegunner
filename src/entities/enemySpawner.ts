@@ -31,12 +31,11 @@ export class EnemySpawner {
 	}
 
 	private spawn(): void {
-		const enemy = new Enemy();
 		const randomPicker = Math.floor(Math.random() * 4);
-		enemy.binder.x = this.spawnPoints[randomPicker].x;
+		const enemy = new Enemy(this.spawnPoints[randomPicker].x);
 		enemy.binder.y = this.spawnPoints[randomPicker].y - enemy.binder.height;
 		enemy.reverseX();
 		enemy.addToContainer(this.container);
-		this.enemies.push(enemy);
+		enemy.start(); this.enemies.push(enemy);
 	}
 }

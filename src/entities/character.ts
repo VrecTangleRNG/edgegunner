@@ -2,6 +2,8 @@ import { Container, Sprite, Ticker } from "pixi.js";
 import { Gun } from "./gun";
 import { StateMachine } from "../state/machine";
 import { BulletContainer } from "./bulletContainer";
+import { Tween } from "@tweenjs/tween.js";
+import { moveEnemy } from "../systems/tweens";
 
 export class Character {
 	binder: Container = new Container();
@@ -38,8 +40,19 @@ export class Player extends Character {
 }
 
 export class Enemy extends Character {
+	private movement: Tween;
+
+	constructor(targetX: number) {
+		super();
+		this.binder.x = targetX;
+		this.movement = moveEnemy(this, 300, 1000);
+	}
+
+	start(): void {
+		this.movement.start();
+	}
 
 	update(ticker: Ticker): void {
-		this.binder.x -= 120 * ticker.deltaMS/1000;
+		this.movement.update();
 	}
 }
