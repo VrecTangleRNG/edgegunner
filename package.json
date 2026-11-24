@@ -20,6 +20,7 @@
   "homepage": "https://github.com/VrecTangleRNG/myWebGame#readme",
   "dependencies": {
     "@tweenjs/tween.js": "^25.0.0",
+    "check2d": "^9.36.4",
     "pixi.js": "^8.20.1"
   },
   "devDependencies": {

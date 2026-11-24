@@ -1,11 +1,14 @@
 import { Container, Ticker } from "pixi.js";
 import { Bullet } from "./bullet";
+import { CollisionManager } from "./collisionManager";
 
 export class BulletContainer {
 	bulletContainer: Bullet[];
 	spriteContainer: Container;
+	collisionManager: CollisionManager;
 
 	constructor() {
+		this.collisionManager = new CollisionManager();
 		this.bulletContainer = [];
 		this.spriteContainer = new Container();
 		this.spriteContainer.zIndex = 0;

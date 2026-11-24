@@ -1,10 +1,12 @@
 import { Container, Ticker } from "pixi.js";
 import { Coordinate } from "./../systems/utils";
 import { Enemy } from "./character";
+import { CollisionManager } from "./collisionManager";
 
 export class EnemySpawner {
 	container: Container = new Container;
 	spawnPoints: Coordinate[] = [];
+	private collisionManager: CollisionManager = new CollisionManager();
 	private enemies: Enemy[] = [];
 	private currentTime: number = 0;
 	private spawnInterval: number = 1000;
@@ -14,6 +16,10 @@ export class EnemySpawner {
 		for (let i = 0; i < 4; i++) {
 			this.spawnPoints.push({ x: 960, y: spawnSegment * (i + 1) });
 		}
+	}
+
+	init(collisionManager: CollisionManager): void {
+		this.collisionManager = collisionManager;
 	}
 
 	update(ticker: Ticker): void {
@@ -36,6 +42,7 @@ export class EnemySpawner {
 		enemy.binder.y = this.spawnPoints[randomPicker].y - enemy.binder.height;
 		enemy.reverseX();
 		enemy.addToContainer(this.container);
-		enemy.start(); this.enemies.push(enemy);
+		enemy.start(this.collisionManager);
+		this.enemies.push(enemy);
 	}
 }
